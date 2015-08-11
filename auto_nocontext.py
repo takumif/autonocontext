@@ -12,7 +12,7 @@ CLIENT_ID = "my_client_id"
 CLIENT_SECRET = "my_client_secret"
 ACCOUNT_USERNAME = "AutoNocontext"
 ACCOUNT_PASSWORD = "my_password"
-USER_AGENT_INFO = "Auto Nocontext by /u/AutoNocontext"
+USER_AGENT_INFO = "my_user_agent_info"
 
 def nextLimit(limit):
     if limit == 1000:
