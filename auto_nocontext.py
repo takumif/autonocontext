@@ -56,7 +56,7 @@ def isComment(thing):
     return type(thing) is praw.objects.Comment
 
 def hasAppearedInSub(comment, r, limit=10):
-    recentPosts = r.get_new(AUTONOCONTEXT, limit=limit)
+    recentPosts = r.get_content("https://www.reddit.com/r/autonocontext/new/", limit=limit)
     for recentPost in recentPosts:
         minLength = min(len(comment.body), len(recentPost.title) - len(" ..."))
         if comment.body[:minLength] == recentPost.title[:minLength]:
