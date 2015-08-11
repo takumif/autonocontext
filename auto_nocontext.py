@@ -72,10 +72,17 @@ def getReddit():
 
     return r
 
+def postNewNocontextComments(comments, r, cache):
+    for comment in comments:
+        if isLegitimateNocontextMention(comment, cache):
+            parent = r.get_info(thing_id=comment.parent_id)
+            if isComment(parent) and not hasAppearedInSub(comment, r):
+                cache.add(comment.parent_id, parent.body)
+                makeSubmission(parent, r)
+
 def run():
     r = getReddit()
     limit = 940
-    count = 0
     cache = EarliestUsageCache()
 
     print "Running Auto Nocontext"
@@ -83,17 +90,9 @@ def run():
     while True:
         try:
             comments = r.get_comments('all', limit=limit)
-            for comment in comments:
-                count += 1
-                if isLegitimateNocontextMention(comment, cache):
-                    parent = r.get_info(thing_id=comment.parent_id)
-                    if isComment(parent) and not hasAppearedInSub(comment, r):
-                        cache.add(comment.parent_id, parent.body)
-                        makeSubmission(parent, r)
-
+            postNewNocontextComments(comments, r, cache)
             limit = nextLimit(limit)
         except:
-            print "ERROR"
             r = getReddit()
 
 if __name__ == "__main__":
